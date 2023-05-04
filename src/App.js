@@ -29,7 +29,6 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import faker from '@faker-js/faker';
 
 ChartJS.register(
     CategoryScale,
@@ -69,6 +68,10 @@ export const data = {
         },
     ],
 };
+
+var positive_count = 0;
+var negative_count = 0;
+var neutral_count = 0;
 
 function App() {
     const [files, setFiles] = useState(null);
@@ -224,6 +227,9 @@ function App() {
                                     ([aspect, sentiments]) => {
                                         return (
                                             <tr>
+                                                {positive_count = positive_count + sentiments["POS"]}
+                                                {negative_count = negative_count + sentiments["NEG"]}
+                                                {neutral_count = neutral_count + sentiments["NEU"]}
                                                 <td>{aspect}</td>
                                                 <td>{sentiments["POS"]}</td>
                                                 <td>{sentiments["NEG"]}</td>
@@ -234,6 +240,9 @@ function App() {
                                 )}
                         </tbody>
                     </table>
+                    positive_count is {positive_count}
+                    positive_count is {negative_count}
+                    positive_count is {neutral_count}
                     {/* <div className="aspects"></div> */}
                     <div className="evaluated-reviews">
                         {evaluation &&
