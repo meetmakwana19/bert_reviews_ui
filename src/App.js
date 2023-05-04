@@ -19,6 +19,57 @@ import { parseCSVFile, getRandomElements } from "./utils";
 import { useRef, useState } from "react";
 import { submitReview, submitReviews } from "./api";
 
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import faker from '@faker-js/faker';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+export const options = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'Sentiments Bar Chart',
+        },
+    },
+};
+
+const labels = ['Positive', 'Negative', 'Neutral'];
+
+export const data = {
+    labels,
+    datasets: [
+        {
+            label: 'Number of sentiments',
+            data: [
+                // 98, 305
+                30, 18, 5
+            ],
+            // backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+    ],
+};
+
 function App() {
     const [files, setFiles] = useState(null);
     const [fileSelectorText, setFileSelectorText] = useState(
@@ -138,6 +189,7 @@ function App() {
                 </div>
                 <div className="evaluation">
                     <H2>Results</H2>
+                    <Bar options={options} data={data} />;
                     <table className="bp4-html-table">
                         <thead>
                             <tr>
