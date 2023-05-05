@@ -54,26 +54,17 @@ export const options = {
 
 const labels = ['Positive', 'Negative', 'Neutral'];
 
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Number of sentiments',
-            data: [
-                // 98, 305
-                30, 18, 5
-            ],
-            // backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-    ],
-};
-
 var positive_count = 0;
 var negative_count = 0;
 var neutral_count = 0;
 
+
 function App() {
+
+    const [postiveCount, setPostiveCount] = useState(0)
+    const [negativeCount, setNegativeCount] = useState(0)
+    const [neutralCount, setNeutralCount] = useState(0)
+
     const [files, setFiles] = useState(null);
     const [fileSelectorText, setFileSelectorText] = useState(
         "Choose a CSV file..."
@@ -125,6 +116,26 @@ function App() {
         }
         const response = await submitReviews(payload);
         setEvaluation(response);
+        if (response.total_count) {
+            setPostiveCount(response.total_count["POS"])
+            setNegativeCount(response.total_count["NEG"])
+            setNeutralCount(response.total_count["NEU"])
+        }
+    };
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Number of sentiments',
+                data: [
+                    // 98, 305
+                    postiveCount, negativeCount, neutralCount
+                ],
+                // backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+        ],
     };
 
     const submitReviewForAnalysis = async () => {
@@ -193,6 +204,7 @@ function App() {
                 <div className="evaluation">
                     <H2>Results</H2>
                     <Bar options={options} data={data} />;
+
                     <table className="bp4-html-table">
                         <thead>
                             <tr>
@@ -227,9 +239,9 @@ function App() {
                                     ([aspect, sentiments]) => {
                                         return (
                                             <tr>
-                                                {positive_count = positive_count + sentiments["POS"]}
-                                                {negative_count = negative_count + sentiments["NEG"]}
-                                                {neutral_count = neutral_count + sentiments["NEU"]}
+                                                {/* {positive_count = positive_count + sentiments["POS"]} */}
+                                                {/* {negative_count = negative_count + sentiments["NEG"]} */}
+                                                {/* {neutral_count = neutral_count + sentiments["NEU"]} */}
                                                 <td>{aspect}</td>
                                                 <td>{sentiments["POS"]}</td>
                                                 <td>{sentiments["NEG"]}</td>
@@ -240,9 +252,6 @@ function App() {
                                 )}
                         </tbody>
                     </table>
-                    positive_count is {positive_count}
-                    positive_count is {negative_count}
-                    positive_count is {neutral_count}
                     {/* <div className="aspects"></div> */}
                     <div className="evaluated-reviews">
                         {evaluation &&
