@@ -18,6 +18,7 @@ import {
 import { parseCSVFile, getRandomElements } from "./utils";
 import { useRef, useState } from "react";
 import { submitReview, submitReviews } from "./api";
+import LoadingBar from 'react-top-loading-bar'
 
 import {
     Chart as ChartJS,
@@ -65,6 +66,8 @@ function App() {
     const [negativeCount, setNegativeCount] = useState(0)
     const [neutralCount, setNeutralCount] = useState(0)
 
+    const [progress, setProgress] = useState(0)
+
     const [files, setFiles] = useState(null);
     const [fileSelectorText, setFileSelectorText] = useState(
         "Choose a CSV file..."
@@ -111,12 +114,16 @@ function App() {
     };
 
     const submitReviewsForAnalysis = async () => {
+        setProgress(30)
         const payload = [];
         for (const [key, value] of Object.entries(selectedReviews)) {
             payload.push({ id: key, text: value });
+            setProgress(50)
         }
+        setProgress(65)
         const response = await submitReviews(payload);
         setEvaluation(response);
+        setProgress(100)
         if (response.total_count) {
             setPostiveCount(response.total_count["POS"])
             setNegativeCount(response.total_count["NEG"])
@@ -183,6 +190,12 @@ function App() {
 
     return (
         <main>
+            <LoadingBar
+                color='#2D72D2'
+                height={8}
+                progress={progress}
+            />
+
             <Dialog
                 title="Import Data"
                 icon="info-sign"
