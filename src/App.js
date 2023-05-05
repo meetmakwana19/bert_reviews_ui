@@ -52,7 +52,7 @@ export const options = {
     },
 };
 
-const labels = ['Positive', 'Negative', 'Neutral'];
+const labels = ['Sentiments'];
 
 var positive_count = 0;
 var negative_count = 0;
@@ -127,13 +127,26 @@ function App() {
         labels,
         datasets: [
             {
-                label: 'Number of sentiments',
+                label: 'Positive',
                 data: [
                     // 98, 305
-                    postiveCount, negativeCount, neutralCount
+                    postiveCount
                 ],
-                // backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                backgroundColor: ['#b1ffa0'],
+            },
+            {
+                label: 'Negative',
+                data: [
+                    negativeCount
+                ],
+                backgroundColor: ["#ffa0a0"],
+            },
+            {
+                label: 'Neutral',
+                data: [
+                    neutralCount
+                ],
+                backgroundColor: ["#fbff87"],
             },
         ],
     };
@@ -203,7 +216,7 @@ function App() {
                 </div>
                 <div className="evaluation">
                     <H2>Results</H2>
-                    <Bar options={options} data={data} />;
+                    <Bar options={options} data={data} />
 
                     <table className="bp4-html-table">
                         <thead>
