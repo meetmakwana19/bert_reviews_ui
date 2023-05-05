@@ -103,6 +103,7 @@ function App() {
     };
 
     const selectRandomReviews = () => {
+        setReviewSelectMode((current) => !current);
         const revs = getRandomElements(reviews, 30);
         const newRevs = {};
         revs.forEach(({ id, text }) => (newRevs[id] = text));
